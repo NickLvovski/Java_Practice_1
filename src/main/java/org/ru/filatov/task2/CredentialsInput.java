@@ -41,31 +41,23 @@ public class CredentialsInput{
         }
 
         boolean sex = true;
-        char charSex = ' ';
+        String charSex;
         boolean sexIsCorrect;
         System.out.print("Введите пол(М/Ж): ");
         do {
-            try {
-                charSex = (char) System.in.read();
-            }
-            catch (IOException e) {
-                System.out.println("Неверный формат. Повторите ввод: ");
-                sexIsCorrect = false;
-            }
-            finally {
-                switch (charSex) {
-                    case 'M':
-                        sex = false;
-                        sexIsCorrect = true;
+            charSex = in.nextLine();
+            sexIsCorrect = true;
+            switch (charSex) {
+                case "М":
+                    sex = false;
                         break;
-                    case 'Ж':
-                        sex = true;
-                        sexIsCorrect = true;
-                        break;
-                    default:
-                        System.out.print("Неверное значение. Повторите ввод: ");
-                        sexIsCorrect = false;
-                }
+                case "Ж":
+                    sex = true;
+                    break;
+                default:
+                    System.out.print("Неверное значение. Повторите ввод: ");
+                    sexIsCorrect = false;
+                    break;
             }
         }
         while (!sexIsCorrect);
@@ -115,11 +107,11 @@ public class CredentialsInput{
         client.setPhone(phone);
     }
 
-    public static void writerJSON(Client clientInfo){
+    public static void writerJSON(Client client){
         try{
             BufferedWriter writer = Files.newBufferedWriter(Paths.get("src/main/resources/client.json"));
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            writer.write(gson.toJson(clientInfo));
+            writer.write(gson.toJson(client));
             writer.close();
         }
         catch (IOException e){

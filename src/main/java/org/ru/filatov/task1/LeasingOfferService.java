@@ -1,6 +1,7 @@
 package org.ru.filatov.task1;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.ru.filatov.task3.OfferStatistics;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -29,7 +30,12 @@ public class LeasingOfferService implements OfferService {
             }
         }
         while(serialNumber.length() != 6 || !NumberUtils.isParsable(serialNumber));
+        Offer offer = new Offer(id, serialNumber, signDate, endingDate, startDate);
+        OfferStatistics.addOffer(offer);
+        OfferStatistics.addClientSurname(client);
+        OfferStatistics.addOfferByClient(client, offer);
+        OfferStatistics.addOfferByStuff(stuff, offer);
 
-        return new Offer(id, serialNumber, signDate, endingDate, startDate);
+        return offer;
     }
 }
