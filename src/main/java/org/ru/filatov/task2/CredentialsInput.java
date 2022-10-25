@@ -1,23 +1,19 @@
 package org.ru.filatov.task2;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.ru.filatov.task1.Client;
 
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class CredentialsInput{
     public static void input(Client client){
         Scanner in = new Scanner(System.in);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         System.out.print("Введите имя: ");
         String name = in.nextLine();
@@ -68,7 +64,7 @@ public class CredentialsInput{
         do {
             dateIsCorrect = true;
             try {
-                birthDate = LocalDate.parse(in.nextLine(), formatter);
+                birthDate = LocalDate.parse(in.nextLine());
             }
             catch (DateTimeParseException e) {
                 dateIsCorrect = false;
@@ -97,6 +93,7 @@ public class CredentialsInput{
             System.out.print("Номер телефона должен состоять из цифр.\nПовторите ввод: ");
             phone = in.nextLine();
         }
+        client.setId(UUID.randomUUID());
         client.setName(name);
         client.setSurname(surname);
         client.setPatronymic(patronymic);
@@ -109,10 +106,8 @@ public class CredentialsInput{
 
     public static void writerJSON(Client client){
         try{
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get("src/main/resources/client.json"));
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            writer.write(gson.toJson(client));
-            writer.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValue(new File("src/main/resources/client.json"), client);
         }
         catch (IOException e){
             System.out.println("IOException");

@@ -28,6 +28,7 @@ public class Client {
     }
 
     public Client() {
+
     }
 
     public UUID getId() {
@@ -70,9 +71,8 @@ public class Client {
         this.sex = sex;
     }
 
-    public LocalDate getBirthdate() {
-        return birthdate;
-    }
+    public String getBirthdate() { return birthdate.toString(); }
+    public LocalDate birthdateAsLocalDate() {return birthdate;}
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;

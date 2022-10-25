@@ -30,6 +30,7 @@ public class LeasingOfferService implements OfferService {
             }
         }
         while(serialNumber.length() != 6 || !NumberUtils.isParsable(serialNumber));
+
         Offer offer = new Offer(id, serialNumber, signDate, endingDate, startDate);
         OfferStatistics.addOffer(offer);
         OfferStatistics.addClientSurname(client);
