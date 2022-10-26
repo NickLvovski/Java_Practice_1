@@ -8,6 +8,16 @@ public class Office {
     private String lawAdress;
     private Integer cabinetsCount;
 
+    public Office() {
+    }
+
+    public Office(UUID id, String address, String lawAdress, Integer cabinetsCount) {
+        this.id = id;
+        this.address = address;
+        this.lawAdress = lawAdress;
+        this.cabinetsCount = cabinetsCount;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -40,13 +50,4 @@ public class Office {
         this.cabinetsCount = cabinetsCount;
     }
 
-    public Office() {
-    }
-
-    public Office(UUID id, String address, String lawAdress, Integer cabinetsCount) {
-        this.id = id;
-        this.address = address;
-        this.lawAdress = lawAdress;
-        this.cabinetsCount = cabinetsCount;
-    }
 }

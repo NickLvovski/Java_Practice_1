@@ -9,6 +9,11 @@ public class Position {
 
     public Position() {
     }
+    public Position(UUID id, String surname, Integer salary) {
+        this.id = id;
+        this.surname = surname;
+        this.salary = salary;
+    }
 
     public UUID getId() {
         return id;
@@ -34,9 +39,4 @@ public class Position {
         this.salary = salary;
     }
 
-    public Position(UUID id, String surname, Integer salary) {
-        this.id = id;
-        this.surname = surname;
-        this.salary = salary;
-    }
 }
