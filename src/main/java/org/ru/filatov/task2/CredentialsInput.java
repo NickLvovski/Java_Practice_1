@@ -1,11 +1,8 @@
 package org.ru.filatov.task2;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.ru.filatov.task1.Client;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -102,15 +99,5 @@ public class CredentialsInput{
         client.setInn(inn);
         client.setPassportSerial(passportSerial);
         client.setPhone(phone);
-    }
-
-    public static void writerJSON(Client client){
-        try{
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(new File("src/main/resources/client.json"), client);
-        }
-        catch (IOException e){
-            System.out.println("IOException");
-        }
     }
 }
