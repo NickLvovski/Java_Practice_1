@@ -8,11 +8,10 @@ import java.io.IOException;
 
 public class CredentialsWriter {
     public static void writeJSON(Client client){
-        try{
+        try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(new File("src/main/resources/client.json"), client);
-        }
-        catch (IOException e){
+        } catch (IOException e){
             System.out.println("IOException");
         }
     }
