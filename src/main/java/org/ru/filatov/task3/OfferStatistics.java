@@ -9,21 +9,24 @@ import org.ru.filatov.task1.Stuff;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class OfferStatistics {
-    private static LinkedList<Offer> offers = new LinkedList<>();
-    private static HashMap<Stuff, LinkedList<Offer>> offersByStuff = new HashMap<>();
-    private static HashMap<Client, LinkedList<Offer>> offersByClients = new HashMap<>();
-    private static HashSet<String> clientSurnames = new HashSet<>();
+    private final List<Offer> offers = new LinkedList<>();
+    private final Map<Stuff, List<Offer>> offersByStuff = new HashMap<>();
+    private final Map<Client, List<Offer>> offersByClients = new HashMap<>();
+    private final Set<String> clientSurnames = new HashSet<>();
 
-    private OfferStatistics(){}
+    // private OfferStatistics(){} // хороший ход для статических-утилитных классов
 
-    public static void addOffer(Offer offer){
+    public void addOffer(Offer offer){
         offers.add(offer);
     }
 
-    public static void addOfferByStuff(Stuff stuff, Offer offer) {
-        LinkedList<Offer> offerList;
+    public void addOfferByStuff(Stuff stuff, Offer offer) {
+        List<Offer> offerList;
         if (offersByStuff.containsKey(stuff)) {
             offerList = offersByStuff.get(stuff);
         } else{
@@ -33,8 +36,8 @@ public class OfferStatistics {
         offersByStuff.put(stuff, offerList);
     }
 
-    public static void addOfferByClient(Client client, Offer offer){
-        LinkedList<Offer> offerList;
+    public void addOfferByClient(Client client, Offer offer){
+        List<Offer> offerList;
         if(offersByClients.containsKey(client)){
             offerList = offersByClients.get(client);
         } else{
@@ -44,24 +47,24 @@ public class OfferStatistics {
         offersByClients.put(client, offerList);
     }
 
-    public static void addClientSurname(@NotNull Client client){
+    public void addClientSurname(@NotNull Client client){
         clientSurnames.add(client.getSurname());
     }
 
-    public static LinkedList<Offer> getOffersByStuff(Stuff stuff){
+    public List<Offer> getOffersByStuff(Stuff stuff){
         return offersByStuff.getOrDefault(stuff, null);
     }
 
-    public static LinkedList<Offer> getOffersByClient(Client client){
+    public List<Offer> getOffersByClient(Client client){
         return offersByClients.getOrDefault(client, null);
     }
 
-    public static String getClientSurnames(){
+    public String getClientSurnames(){
         return clientSurnames.toString();
     }
 
     @Nullable
-    public static Offer findBySerialNumber(String number){
+    public Offer findBySerialNumber(String number){
         for (Offer offer: offers) {
             if (offer.getSerialNumber().equals(number)) return offer;
         }
@@ -69,13 +72,16 @@ public class OfferStatistics {
     }
 
     @Nullable
-    public static LinkedList<Offer> findByClientSurname(String surname){
+    public List<Offer> findByClientSurname(String surname){
         for (Client client: offersByClients.keySet()){
-            if (surname.equals(client.getSurname())) return offersByClients.get(client);
+            if (surname.equals(client.getSurname())) {
+                return offersByClients.get(client);
+            }
         }
         return null;
     }
-    public static LinkedList<Offer> findByStuff(Stuff stuff){
+
+    public List<Offer> findByStuff(Stuff stuff){
         return offersByStuff.getOrDefault(stuff, null);
     }
 }

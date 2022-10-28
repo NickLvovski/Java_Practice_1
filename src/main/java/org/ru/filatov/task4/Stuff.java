@@ -1,7 +1,9 @@
-package org.ru.filatov.task1;
+package org.ru.filatov.task4;
 
 import java.time.LocalDate;
 import java.util.UUID;
+
+import org.ru.filatov.task1.Position;
 
 public class Stuff {
     private UUID id;
@@ -10,22 +12,19 @@ public class Stuff {
     private String patronymic;
     private Boolean sex;
     private LocalDate birthdate;
-    private Double salaryMultiplier;
-    private Position position;
+    private Double salary;
 
-    public Stuff(UUID id, String surname, String name, String patronymic,
-                 Boolean sex, LocalDate birthdate, Double salaryMultiplier, Position position) {
+    public Stuff() {
+    }
+
+    public Stuff(UUID id, String surname, String name, String patronymic, Boolean sex, LocalDate birthdate, Double salary) {
         this.id = id;
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
         this.sex = sex;
         this.birthdate = birthdate;
-        this.salaryMultiplier = salaryMultiplier;
-        this.position = position;
-    }
-
-    public Stuff() {
+        this.salary = salary;
     }
 
     public UUID getId() {
@@ -76,19 +75,11 @@ public class Stuff {
         this.birthdate = birthdate;
     }
 
-    public Double getSalaryMultiplier() {
-        return salaryMultiplier;
+    public Double getSalary() {
+        return salary;
     }
 
-    public void setSalaryMultiplier(Double salaryMultiplier) {
-        this.salaryMultiplier = salaryMultiplier;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 }

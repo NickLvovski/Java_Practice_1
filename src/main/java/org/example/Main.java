@@ -9,8 +9,7 @@ public class Main {
         //LeasingOfferService service = LeasingOfferService.getInstance();
 
         //Offer offer = service.signNewOffer(LocalDateTime.now(), LocalDateTime.now(), new Client(), new Stuff());
-        Client client = new Client();
-        CredentialsInput.input(client);
+        Client client = CredentialsInput.input();
         CredentialsWriter.writeJSON(client);
     }
 }

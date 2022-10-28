@@ -6,61 +6,72 @@ import com.opencsv.exceptions.CsvException;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class StuffStatistics {
-    public static final String CSV_NAME_COLUMN = "name";
-    public static final String CSV_SURNAME_COLUMN = "surname";
-    public static final String CSV_BIRTH_DATE_COLUMN = "birthDate";
-    public static final String CSV_SEX_COLUMN = "sex";
-    public static final String CSV_SALARY_COLUMN = "salary";
+    public static final Integer CSV_ID_COLUMN = 0;
+    public static final Integer CSV_NAME_COLUMN = 1;
+    public static final Integer CSV_SURNAME_COLUMN = 2;
+    public static final Integer CSV_PATRONYMIC_COLUMN = 3;
+    public static final Integer CSV_BIRTH_DATE_COLUMN = 4;
+    public static final Integer CSV_SEX_COLUMN = 5;
+    public static final Integer CSV_SALARY_COLUMN = 6;
 
-    private final List<String[]> rows;
-    private final HashMap<String, Integer> columns;
+    private final List<Stuff> stuffsRow = new ArrayList<>();
 
     public StuffStatistics(String file){
         try(CSVReader reader = new CSVReaderBuilder
                 (new FileReader(StuffStatistics.class.getResource(file).getFile())).build()){
-            String[] cols = reader.readNext();
-            columns = new HashMap<>();
-            for(int i = 0; i < cols.length; i++){
-                columns.put(cols[i], i);
-            }
-            rows = reader.readAll();
+            List<String[]> rows = reader.readAll();
+            List<Stuff> mappedStuffList = rows.stream()
+                    .map(row -> {
+                        Stuff stuff = new Stuff();
+                        stuff.setId(UUID.fromString(row[CSV_ID_COLUMN]));
+                        stuff.setName(row[CSV_NAME_COLUMN]);
+                        stuff.setSurname(row[CSV_SURNAME_COLUMN]);
+                        stuff.setPatronymic(row[CSV_PATRONYMIC_COLUMN]);
+                        stuff.setSex(!Boolean.parseBoolean(row[CSV_SEX_COLUMN]));
+                        stuff.setBirthdate(LocalDate.parse(row[CSV_BIRTH_DATE_COLUMN]));
+                        stuff.setSalary(Double.valueOf(row[CSV_SALARY_COLUMN]));
+                        return stuff;
+                    }).toList();
+            stuffsRow.addAll(mappedStuffList);
         } catch (IOException | CsvException e) {
             throw new RuntimeException(e);
         }
     }
     public int nameStat(String name){
-        return (int)rows.stream()
-                .filter(p -> p[columns.get(CSV_NAME_COLUMN)].equals(name))
+        return (int)stuffsRow.stream()
+                .filter(p -> p.getName().equals(name))
                 .count();
     }
     public int surnameStat(String surname){
-        return (int)rows.stream()
-                .filter(p -> p[columns.get(CSV_SURNAME_COLUMN)].equals(surname))
+        return (int)stuffsRow.stream()
+                .filter(p -> p.getSurname().equals(surname))
                 .count();
     }
     public  int birthMonthStat(int month){
-        return (int)rows.stream()
-                .filter(p -> Integer.parseInt(p[columns.get(CSV_BIRTH_DATE_COLUMN)].split("-")[1]) == month)
+        return (int)stuffsRow.stream()
+                .filter(p -> p.getBirthdate().getMonthValue() == month)
                 .count();
     }
     public int sexStat(boolean sex){
-        return (int)rows.stream()
-                .filter(p -> p[columns.get(CSV_SEX_COLUMN)].equals(String.valueOf(sex)))
+        return (int)stuffsRow.stream()
+                .filter(p -> p.getSex().equals(sex))
                 .count();
     }
     public int salaryStat(int lowerBound){
-        return (int)rows.stream()
-                .filter(p -> Integer.parseInt(p[columns.get(CSV_SALARY_COLUMN)]) >= lowerBound)
+        return (int)stuffsRow.stream()
+                .filter(p -> p.getSalary() >= lowerBound)
                 .count();
     }
     public int salaryStat(int lowerBound, int higherBound){
-        return (int)rows.stream()
-                .filter(p -> Integer.parseInt(p[columns.get(CSV_SALARY_COLUMN)]) >= lowerBound &&
-                        Integer.parseInt(p[columns.get(CSV_SALARY_COLUMN)]) <= higherBound)
+        return (int)stuffsRow.stream()
+                .filter(p -> p.getSalary() >= lowerBound &&
+                             p.getSalary() <= higherBound)
                 .count();
     }
 }

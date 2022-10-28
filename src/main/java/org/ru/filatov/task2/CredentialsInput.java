@@ -9,8 +9,9 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class CredentialsInput{
-    public static void input(Client client){
-        Scanner in = new Scanner(System.in);
+    public static Client input(){
+        Scanner in = new Scanner(System.in); // Лучше использовать BufferedReader - более универсальный подход
+        // Тем более scanner в разы медленнее
 
         System.out.print("Введите имя: ");
         String name = in.nextLine();
@@ -40,17 +41,12 @@ public class CredentialsInput{
         do {
             charSex = in.nextLine();
             sexIsCorrect = true;
-            switch (charSex) {
-                case "М":
-                    sex = false;
-                        break;
-                case "Ж":
-                    sex = true;
-                    break;
-                default:
-                    System.out.print("Неверное значение. Повторите ввод: ");
-                    sexIsCorrect = false;
-                    break;
+            // IDEA привела меня к такому коду, путем прожатия Alt + Enter -> Enter несколько раз
+            if ("М".equals(charSex)) {
+                sex = false;
+            } else {
+                System.out.print("Неверное значение. Повторите ввод: ");
+                sexIsCorrect = false;
             }
         }
         while (!sexIsCorrect);
@@ -62,8 +58,7 @@ public class CredentialsInput{
             dateIsCorrect = true;
             try {
                 birthDate = LocalDate.parse(in.nextLine());
-            }
-            catch (DateTimeParseException e) {
+            } catch (DateTimeParseException e) {
                 dateIsCorrect = false;
                 System.out.print("Неверный формат даты.\nПовторите ввод: ");
             }
@@ -90,6 +85,7 @@ public class CredentialsInput{
             System.out.print("Номер телефона должен состоять из цифр.\nПовторите ввод: ");
             phone = in.nextLine();
         }
+        Client client = new Client();
         client.setId(UUID.randomUUID());
         client.setName(name);
         client.setSurname(surname);
@@ -99,5 +95,6 @@ public class CredentialsInput{
         client.setInn(inn);
         client.setPassportSerial(passportSerial);
         client.setPhone(phone);
+        return client;
     }
 }
